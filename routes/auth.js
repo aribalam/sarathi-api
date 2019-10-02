@@ -37,13 +37,14 @@ router.get('/status', (req, res) => {
   const token = req.headers['authorization'];
   if (!token)
     res.sendStatus(403);
-  
-  jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, decoded) => {
-    if (err)
-      res.sendStatus(403);
-    else 
-      res.sendStatus(200);
-  })
+  else {
+    jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, decoded) => {
+      if (err)
+        res.sendStatus(403);
+      else 
+        res.sendStatus(200);
+    })
+  }
 });
 
 

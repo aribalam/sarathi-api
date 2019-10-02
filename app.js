@@ -110,16 +110,20 @@ app.use((req, res, next) => {
 
   var token = req.headers['authorization'];
 
-  jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, userData) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(403);
-    }
-    else {
-      req.user = userData;
-      next();
-    }
-  });
+  if (token) {
+    jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, userData) => {
+      if (err) {
+        console.log(err);
+        res.sendStatus(403);
+      }
+      else {
+        req.user = userData;
+        next();
+      }
+    });
+  }
+  else 
+    res.sendStatus(403);
   
 });
 
