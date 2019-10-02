@@ -101,7 +101,6 @@ const options = {
     res.set('Service-Worker-Allowed', '/');
   },
 };
-app.use(express.static(path.join(__dirname, 'public'), options));
 
 app.use('/api/auth', authRouter);
 
@@ -110,7 +109,7 @@ app.use((req, res, next) => {
 
   var token = req.headers['authorization'];
 
-  if (token) {
+  if (token !== 'null') {
     jwt.verify(token, process.env.jwtSecret || 'thisismysecret', (err, userData) => {
       if (err) {
         console.log(err);
