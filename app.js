@@ -40,7 +40,7 @@ passport.deserializeUser((fb_id, done) => {
 passport.use(new fbStrategy({
   clientID: process.env.appId || config.appId,
   clientSecret: process.env.appSecret || config.appSecret,
-  callbackURL: config.callbackUrl,
+  callbackURL: process.env.API_BASE_URL || config.callbackUrl,
   profileURL: config.profileURL,
   profileFields: config.profileFields,
 }, (token, refreshToken, profile, done) => {
