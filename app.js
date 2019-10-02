@@ -18,7 +18,6 @@ var authRouter = require('./routes/auth');
 var indexRouter = require('./routes/index');
 var requestsRouter = require('./routes/requests');
 var userRouter = require('./routes/user');
-var staticPageRouter = express.Router();
 
 var config = require('./config');
 var models = require('./models/index').models;
@@ -81,13 +80,6 @@ webpush.setVapidDetails(
   process.env.privateKey || config.privateKey
 );
 
-
-if (process.env.NODE_ENV === 'production') {
-  staticPageRouter.use((req, res) => {
-    res.sendFile(path.join(__dirname, './client/build/index.html'));
-  });
-}
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -111,13 +103,7 @@ const options = {
 };
 app.use(express.static(path.join(__dirname, 'public'), options));
 
-// use the build folder created by react app when in production
-if (process.env.NODE_ENV === 'production')
-  app.use(express.static('client/build'));
-
 app.use('/api/auth', authRouter);
-
-app.use('/', staticPageRouter);
 
 // Middleware to decode jwt token received and attach it to the request
 app.use((req, res, next) => {
