@@ -11,10 +11,13 @@ router.get('/join_request', (req, res) => {
 router.post('/join_request', async (req, res) => {
 
   try {
+
+    var user = await models.User.findOne({fb_id: req.user.fb_id}).exec();
+
     var traveler = {
       fb_id: req.user.fb_id,
-      profile: req.user.profile,
-      name: req.user.name,
+      profile: user.profile,
+      name: user.name,
       from: req.body.from,
       to: req.body.to,
       time: new Date(req.body.time),
