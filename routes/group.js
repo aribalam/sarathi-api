@@ -17,30 +17,33 @@ router.get('/create_group', (req, res) => {
 
 // creates a group for the user
 router.post('/create_group', async (req, res) => {
-  
-  var traveler = {
-    fb_id: req.user.fb_id,
-    profile: req.user.profile,
-    name: req.user.name,
-    from: req.body.from,
-    to: req.body.to,
-    time: new Date(req.body.boardingTime),
-  };
-  var grp = models.Group({
-    from: traveler.from,
-    to: traveler.to,
-    owner: traveler,
-    departure: req.body.departure,
-    status: 'open',
-  });
 
-  grp.save()
-  .then(group => models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: group}}).exec())
-  .then(() => res.sendStatus(200))
-  .catch(err => {
-    console.log(err);
-    res.status(500).send(err);
-  })
+  models.User.findOne({fb_id: req.user.fb_id}).exec()
+  .then((user) => {
+    var traveler = {
+      fb_id: req.user.fb_id,
+      profile: user.profile,
+      name: user.name,
+      from: req.body.from,
+      to: req.body.to,
+      time: new Date(req.body.boardingTime),
+    };
+    var grp = models.Group({
+      from: traveler.from,
+      to: traveler.to,
+      owner: traveler,
+      departure: req.body.departure,
+      status: 'open',
+    });
+
+    grp.save()
+    .then(group => models.User.findOneAndUpdate({fb_id: traveler.fb_id}, {$push: {created_groups: group}}).exec())
+    .then(() => res.sendStatus(200))
+    .catch(err => {
+      console.log(err);
+      res.status(500).send(err);
+    })
+  });
 
 });
 
