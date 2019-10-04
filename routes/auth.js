@@ -10,7 +10,7 @@ router.get('/facebook', passport.authenticate("facebook"));
 // params - state-param : unique code to prevent csrf
 // 
 router.get('/facebook/callback', passport.authenticate("facebook", {
-  failureRedirect: (process.env.FRONTEND_BASE_URL || 'http://localhost:8000') + '/login',
+  failureRedirect: (process.env.FRONTEND_BASE_URL || 'http://localhost:3000') + '/login',
   session: false
 }), (req, res) => {
 
@@ -18,7 +18,7 @@ router.get('/facebook/callback', passport.authenticate("facebook", {
   var token = jwt.sign({fb_id: req.user.fb_id}, process.env.jwtSecret || 'thisismysecret', {expiresIn: '1h'});
 
   // redirect to success page with token as url parameter
-  res.redirect(((process.env.FRONTEND_BASE_URL || 'http://localhost:8000') + '/loginRedirect?') + token);
+  res.redirect(((process.env.FRONTEND_BASE_URL || 'http://localhost:3000') + '/loginRedirect?') + token);
 });
 
 router.get('/logout', (req, res) => {

@@ -33,6 +33,10 @@ const userSchema = mongoose.Schema({
     showProfileDialog: {
         type: Boolean,
         default: true,
+    },
+    info_shown: {
+        type: Boolean,
+        default: false,
     }
 });
 

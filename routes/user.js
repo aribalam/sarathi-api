@@ -135,4 +135,26 @@ router.post('/dont_show_profile_dialog', (req, res) => {
     });
 })
 
+router.get('/get_info_shown', (req, res) => {
+    models.User.findOne({fb_id: req.user.fb_id}).exec()
+    .then(user => {
+        res.status(200).send(user.info_shown);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
+router.post('/set_info_shown', (req, res) => {
+    models.User.findOneAndUpdate({fb_id: req.user.fb_id}, {info_shown: req.body.value}).exec()
+    .then(() => {
+        res.sendStatus(200);
+    })
+    .catch(err => {
+        console.log(err);
+        res.sendStatus(500);
+    });
+})
+
 module.exports = router;
